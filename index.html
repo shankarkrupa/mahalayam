@@ -10,12 +10,13 @@ var data =
      {
 "day": "புதன்",
 "date":  "22-09-2021",
-"sankalpam":  "",
+"userdata": {
 "motheralive":  true,
 "appagothram":  "பாரத்வாஜ",
 "pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
 "maamagothram":  "கௌண்டின்ய",
-"maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"],
+"maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
+},
 "yearname":  "ப்லவ",
 "monthname":  "கன்யா",
 "thithiname": "த்விதீயாயாம்",
@@ -32,8 +33,8 @@ var data =
 <div id="tharppanam"></div>
 
 <script id="theTmpl" type="text/x-jsrender">
-<label>தாயார் உள்ளார் <input type="checkbox" data-link="motheralive" /> </label>
- 
+<label>தாயார் உள்ளார் <input type="checkbox" data-link="userdata.motheralive" /> </label>
+
 <h1 style="color: darkblue">{{:date}}. {{:day}}.</h1>
 
 <p>ஆசமனம் </p>
@@ -54,22 +55,22 @@ var data =
 
 <quote>
 ப்ராசீன விதி - பூணூல் இடம் மாற்றிக்கொள்ளவும்
-<quote/>
+</quote>
 
-{{:appagothram}} கோத்ராணாம்
+{{:userdata.appagothram}} கோத்ராணாம்
 
-{{:pithrusharmas}} ஶர்மணாம் 
+{{:userdata.pithrusharmas}} ஶர்மணாம் 
  வஸுருத்ராதித்ய ஸ்வரூபாணாம் அஸ்மத் பித்ரு பிதாமஹ ப்ரபிதாமஹானாம்
 
-<span data-link="visible{:!motheralive}">
+<span data-link="visible{:!userdata.motheralive}">
 மாத்ரு, பிதாமஹீ, ப்ரபிதாமஹீனாம்
 </span>
 
-<span data-link="visible{:motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
+<span data-link="visible{:userdata.motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
 </span>
 
-{{:maamagothram}} கோத்ராணாம்
-{{:maamasharmas}} ஶர்மணாம் 
+{{:userdata.maamagothram}} கோத்ராணாம்
+{{:userdata.maamasharmas}} ஶர்மணாம் 
 </script>
   
 <p>
