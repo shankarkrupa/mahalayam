@@ -11,7 +11,7 @@ var data =
 "day": "புதன்",
 "date":  "22-09-2021",
 "sankalpam":  "",
-"motheralive":  "true",
+"motheralive":  true,
 "appagothram":  "பாரத்வாஜ",
 "pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
 "maamagothram":  "கௌண்டின்ய",
@@ -32,9 +32,7 @@ var data =
 <div id="tharppanam"></div>
 
 <script id="theTmpl" type="text/x-jsrender">
-<form>
 தாயார் உள்ளார் <input type="checkbox" data-link="motheralive" />
- </form>
  
 <h1 style="color: darkblue">{{:date}}. {{:day}}.</h1>
 
@@ -63,7 +61,7 @@ var data =
  வஸுருத்ராதித்ய ஸ்வரூபாணாம் அஸ்மத் பித்ரு பிதாமஹ ப்ரபிதாமஹானாம்
 
 <span data-link="visible{:!motheralive}">
-தாயார் உயிருடன் இல்லையெனில் பின் அடுத்துவருவதைக் கூறுக... மாத்ரு பிதாமஹீ ப்ரபிதாமஹீனாம்
+மாத்ரு பிதாமஹீ ப்ரபிதாமஹீனாம்
 <span/>
 
 <span data-link="visible{:motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
