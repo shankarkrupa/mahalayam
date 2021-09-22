@@ -33,19 +33,26 @@ var data =
  <body>
 
 <p>
- <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseMotherAlive" role="button" aria-expanded="false" aria-controls="collapseMotherAlive">
+        <i class="bi bi-tools"></i>
+  </a>
+
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         <i class="bi bi-people-fill"></i><i class="bi bi-person-fill"></i>
   </a>
 </p>
 <div id="tharppanam"></div>
 
 <script id="theTmpl" type="text/x-jsrender">
+<div class="collapse-horizontal" id="collapseMotherAlive">
+  <div class="card card-body" style="width: 400px;">
+        <label class="form-check-label">தாயார் உள்ளார் <input type="checkbox" data-link="userdata.motheralive" class="form-check-input" /> </label>
+        <label class="form-label" for="appagothram">அப்பா கோத்ரம் <input type="text" id="appagothram" data-link="{:userdata.appagothram:}" class="form-control" /> </label>
+        <label class="form-label" for="maamagothram">மாமா கோத்ரம்<input type="text" id="maamagothram" data-link="{:userdata.maamagothram:}" class="form-control" /> </label>
 
-<div class="collapse-horizontal" id="collapseExample2">
-  <div class="card card-body" style="width: 200px;">
-    <label>தாயார் உள்ளார் <input type="checkbox" data-link="userdata.motheralive" /> </label>
- </div>
+  </div>
 </div>
+
 <h1 style="color: darkblue">{{:date}}. {{:day}}.</h1>
 
 <p>ஆசமனம் </p>
@@ -68,9 +75,9 @@ var data =
 ப்ராசீன விதி - பூணூல் இடம் மாற்றிக்கொள்ளவும்
 </quote>
 
-{{:userdata.appagothram}} கோத்ராணாம்
+{^{>userdata.appagothram}} கோத்ராணாம்
 
-{{:userdata.pithrusharmas}} ஶர்மணாம் 
+{^{>userdata.pithrusharmas}} ஶர்மணாம் 
  வஸுருத்ராதித்ய ஸ்வரூபாணாம் அஸ்மத் பித்ரு பிதாமஹ ப்ரபிதாமஹானாம்
 
 <span data-link="visible{:!userdata.motheralive}">
@@ -80,8 +87,8 @@ var data =
 <span data-link="visible{:userdata.motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
 </span>
 
-{{:userdata.maamagothram}} கோத்ராணாம்
-{{:userdata.maamasharmas}} ஶர்மணாம் 
+{^{>userdata.maamagothram}} கோத்ராணாம்
+{^{>userdata.maamasharmas}} ஶர்மணாம் 
 </script>
   
 <p>
