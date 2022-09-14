@@ -29,7 +29,7 @@ var data =
  },
         {
 "day": "செவ்வாய்",
-"date":  "05-10-2021",
+"date":  "14-09-2022",
 "userdata": {
 "motheralive":  true,
 "appagothram":  "பாரத்வாஜ",
@@ -46,6 +46,12 @@ var data =
 "karananame": "பத்ர"
  }
  ];
+ 
+ //filter for the current date sankalpam
+ var dtCurrent = new Date();
+ var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
+ data = data.filter(thedata => thedata.date = strCurrentDate);
+ 
 </script>
  </head>
  <body>
