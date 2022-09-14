@@ -50,7 +50,7 @@ var dataAll =
  //filter for the current date sankalpam
  var dtCurrent = new Date();
  var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
- data = dataAll.filter(thedata => thedata.date === strCurrentDate);
+ var data = dataAll.filter(thedata => thedata.date === strCurrentDate);
  
 </script>
  </head>
