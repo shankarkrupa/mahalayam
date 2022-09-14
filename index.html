@@ -44,20 +44,20 @@ var dataAll =
  var dtCurrent = new Date();
  var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
  var filteredForCurrentDate = dataAll.filter(thedata => thedata.date === strCurrentDate);
- 
- var data = new Array();
  if(filteredForCurrentDate == undefined)
  {
   filteredForCurrentDate = dataAll[0];
  }
+ 
+ var data = new Array();
  data.push(filteredForCurrentDate);
- data.userdata = {
+ var userdata = [{
 "motheralive":  true,
 "appagothram":  "பாரத்வாஜ",
 "pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
 "maamagothram":  "கௌண்டின்ய",
 "maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
-}
+}]
 </script>
  </head>
  <body>
@@ -100,6 +100,9 @@ var dataAll =
  <span class="text-success">{{:dayname}} </span> வாஸர யுக்தாயாம், <span class="text-success">{{:starname}} </span> நக்ஷத்ர யுக்தாயாம்¬ <span class="text-success">{{:yoganame}} </span> நாம யோக <span class="text-success">{{:karananame}} </span> கரண ஏவங்குண விஸேஷண விசிஷ்ட்டாயாம் அஸ்யாம் வர்தமானாயாம்
  <span class="text-success">{{:thithiname}} </span> புண்யதிதௌ
 </p>
+</script>
+
+<script id="theTmplUser" type="text/x-jsrender">
 
 <quote>
 ப்ராசீன விதி - பூணூல் இடம் மாற்றிக்கொள்ளவும்
@@ -152,6 +155,8 @@ avahanam:
 <script type="text/javascript">
 var template = $.templates("#theTmpl");
 template.link("#tharppanam", data);
+var template = $.templates("#theTmplUser");
+template.link("#tharppanam", userdata);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
