@@ -50,7 +50,8 @@ var dataAll =
  //filter for the current date sankalpam
  var dtCurrent = new Date();
  var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
- var data = dataAll.filter(thedata => thedata.date === strCurrentDate);
+ var data = new Array();
+ data.push(dataAll.filter(thedata => thedata.date === strCurrentDate));
  
 </script>
  </head>
@@ -90,29 +91,31 @@ var dataAll =
  வைவஸ்வத மண்வந்த்ரே அஷ்டாவிம்சதி, தமே, கலியுகே, ப்ரதமேபாதே ஜம்பூத்வீபே, பாரதவர்ஷே, பரதகண்டே மேரோ: தக்ஷிணே பார்ஷ்வே ஸஹாப்தே அஸ்மின்வர்த்தமாணே, வ்யாபஹாரிகே,
  ப்ரபவாதி, ஷஷ்ட்யாம் ஸம்வத்சராணாம்,மத்யே
 
- ({{:yearname}})  நாம ஸம்வத்ஸரே, தக்ஷிணாயணே, வர்ஷ ரிதௌ, {{:monthname}} மாஸே, க்ருஷ்ண பக்ஷே, {{:thithiname}} புண்யதிதௌ, வாஸர: வாஸரஸ்து
- {{:dayname}} வாஸர யுக்தாயாம், {{:starname}} நக்ஷத்ர யுக்தாயாம்¬ {{:yoganame}} நாம யோக {{:karananame}} கரண ஏவங்குண விஸேஷண விசிஷ்ட்டாயாம் அஸ்யாம் வர்தமானாயாம்
- {{:thithiname}} புண்யதிதௌ
+<span class="text-success"> ({{:yearname}}) </span> நாம ஸம்வத்ஸரே, தக்ஷிணாயணே, வர்ஷ ரிதௌ, <span class="text-success">{{:monthname}} </span>மாஸே, க்ருஷ்ண பக்ஷே, <span class="text-success">{{:thithiname}} </span>புண்யதிதௌ, வாஸர: வாஸரஸ்து
+ <span class="text-success">{{:dayname}} </span> வாஸர யுக்தாயாம், <span class="text-success">{{:starname}} </span> நக்ஷத்ர யுக்தாயாம்¬ <span class="text-success">{{:yoganame}} </span> நாம யோக <span class="text-success">{{:karananame}} </span> கரண ஏவங்குண விஸேஷண விசிஷ்ட்டாயாம் அஸ்யாம் வர்தமானாயாம்
+ <span class="text-success">{{:thithiname}} </span> புண்யதிதௌ
 </p>
 
 <quote>
 ப்ராசீன விதி - பூணூல் இடம் மாற்றிக்கொள்ளவும்
 </quote>
 
-{^{>userdata.appagothram}} கோத்ராணாம்
+<span class="text-success"> {^{>userdata.appagothram}} </span>கோத்ராணாம்
 
-{^{>userdata.pithrusharmas}} ஶர்மணாம் 
+<span class="text-success"> {^{>userdata.pithrusharmas}} </span>ஶர்மணாம் 
  வஸுருத்ராதித்ய ஸ்வரூபாணாம் அஸ்மத் பித்ரு பிதாமஹ ப்ரபிதாமஹானாம்
 
-<span data-link="visible{:!userdata.motheralive}">
-மாத்ரு, பிதாமஹீ, ப்ரபிதாமஹீனாம்
-</span>
+<span class="text-success">
+ <span data-link="visible{:!userdata.motheralive}">
+  மாத்ரு, பிதாமஹீ, ப்ரபிதாமஹீனாம்
+ </span>
 
-<span data-link="visible{:userdata.motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
-</span>
+ <span data-link="visible{:userdata.motheralive}">பிதாமஹீ, பிது:பிதாமஹீ, பிது:ப்ரபிதாமஹீனாம்
+ </span>
+</span> <!--show/hide mother alive/not alive area  -->
 
-{^{>userdata.maamagothram}} கோத்ராணாம்
-{^{>userdata.maamasharmas}} ஶர்மணாம் 
+<span class="text-success"> {^{>userdata.maamagothram}} </span> கோத்ராணாம்
+<span class="text-success"> {^{>userdata.maamasharmas}} </span> ஶர்மணாம் 
 </script>
   
 <p>
