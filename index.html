@@ -30,13 +30,6 @@ var dataAll =
         {
 "day": "செவ்வாய்",
 "date":  "14-09-2022",
-"userdata": {
-"motheralive":  true,
-"appagothram":  "பாரத்வாஜ",
-"pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
-"maamagothram":  "கௌண்டின்ய",
-"maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
-},
 "yearname":  "ப்லவ",
 "monthname":  "கன்யா",
 "thithiname": "சதுர்தஷ்யாம்",
@@ -52,7 +45,14 @@ var dataAll =
  var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
  var data = new Array();
  data.push(dataAll.filter(thedata => thedata.date === strCurrentDate));
- 
+ data.push(
+  "userdata": {
+"motheralive":  true,
+"appagothram":  "பாரத்வாஜ",
+"pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
+"maamagothram":  "கௌண்டின்ய",
+"maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
+})
 </script>
  </head>
  <body>
