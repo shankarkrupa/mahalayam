@@ -7,7 +7,7 @@
   <script src="https://www.jsviews.com/download/jsviews.min.js"></script>
  <link href="https://www.jsviews.com/samples/samples.css" rel="stylesheet" />
 <script type="text/javascript">
-var data = 
+var dataAll = 
     [
      {
 "day": "செவ்வாய்",
@@ -50,7 +50,7 @@ var data =
  //filter for the current date sankalpam
  var dtCurrent = new Date();
  var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
- data = data.filter(thedata => thedata.date = strCurrentDate);
+ data = dataAll.filter(thedata => thedata.date = strCurrentDate);
  
 </script>
  </head>
