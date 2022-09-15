@@ -10,27 +10,20 @@
 var dataAll = 
     [
      {
-"day": "செவ்வாய்",
-"date":  "05-10-2021",
-"userdata": {
-"motheralive":  true,
-"appagothram":  "பாரத்வாஜ",
-"pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
-"maamagothram":  "கௌண்டின்ய",
-"maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
-},
-"yearname":  "ப்லவ",
-"monthname":  "கன்யா",
-"thithiname": "சதுர்தஷ்யாம்",
-"starname":  "உத்ர பல்குனி",
-"dayname":  "பௌம",
-"yoganame":  "சுப்ர",
-"karananame": "பத்ர"
+"day": "INCORRECT",
+"date":  "1900-01-01",
+"yearname":  "UNKNOWN",
+"monthname":  "UNKNOWN",
+"thithiname": "UNKNOWN",
+"starname":  "UNKNOWN",
+"dayname":  "UNKNOWN",
+"yoganame":  "UNKNOWN",
+"karananame": "UNKNOWN"
  },
         {
 "day": "செவ்வாய்",
-"date":  "14-09-2022",
-"yearname":  "ப்லவ",
+"date":  "2022-09-14",
+"yearname":  "subakruthu",
 "monthname":  "கன்யா",
 "thithiname": "சதுர்தஷ்யாம்",
 "starname":  "உத்ர பல்குனி",
@@ -42,22 +35,32 @@ var dataAll =
  
  //filter for the current date sankalpam
  var dtCurrent = new Date();
- var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth() + '-' + dtCurrent.getFullYear();
- var filteredForCurrentDate = dataAll.filter(thedata => thedata.date === strCurrentDate);
- if(filteredForCurrentDate == undefined)
+ var intCurrentDate = dtCurrent.getDate();
+ var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth()+1 + '-' + dtCurrent.getFullYear();
+ var filteredForCurrentDate = dataAll.filter(thedata =>  (new Date(Date.parse(thedata.date))).getDate() === intCurrentDate);
+
+ if(filteredForCurrentDate == undefined || filteredForCurrentDate.length ===0)
  {
   filteredForCurrentDate = dataAll[0];
  }
+ else
+ {
+	filteredForCurrentDate = filteredForCurrentDate[0]
+ }
+
+console.log(filteredForCurrentDate);
  
  var data = new Array();
  data.push(filteredForCurrentDate);
  var userdata = [{
+"userdata": {
 "motheralive":  true,
 "appagothram":  "பாரத்வாஜ",
 "pithrusharmas":  ["நாராயண", "ஶ்ரீ க்ருஷ்ண","நாராயண"],
 "maamagothram":  "கௌண்டின்ய",
 "maamasharmas":  ["பஞ்சவதீஸ்வர", "கைலாசநாத", "பஞ்சவதீஸ்வர"]
-}]
+}
+}];
 </script>
  </head>
  <body>
@@ -71,9 +74,12 @@ var dataAll =
         <i class="bi bi-people-fill"></i><i class="bi bi-person-fill"></i>
   </a>
 </p>
-<div id="tharppanam"></div>
 
-<script id="theTmpl" type="text/x-jsrender">
+<div id="sankalpamConfig"></div>
+<div id="sankalpamDay"></div>
+<div id="sankalpamUser"></div>
+
+<script id="theSankalpamConfig" type="text/x-jsrender">
 <div class="collapse" id="collapseMotherAlive">
   <div class="card card-body" style="width: 400px;">
         <label class="form-check-label">தாயார் உள்ளார் <input type="checkbox" data-link="userdata.motheralive" class="form-check-input" /> </label>
@@ -82,6 +88,9 @@ var dataAll =
 
   </div>
 </div>
+</script>
+
+<script id="theTmpl" type="text/x-jsrender">
 
 <h1 style="color: darkblue">{{:date}}. {{:day}}.</h1>
 
@@ -153,10 +162,15 @@ avahanam:
 </p>
 
 <script type="text/javascript">
+var templateConfig = $.templates("#theSankalpamConfig");
+templateConfig.link("#sankalpamConfig", userdata);
+
 var template = $.templates("#theTmpl");
-template.link("#tharppanam", data);
-var template = $.templates("#theTmplUser");
-template.link("#tharppanam", userdata);
+template.link("#sankalpamDay", data);
+
+var templateUser = $.templates("#theTmplUser");
+templateUser.link("#sankalpamUser", userdata);
+
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 </body>
