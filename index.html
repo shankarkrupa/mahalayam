@@ -442,7 +442,7 @@ var dataAll =
  }
  else
  {
-	filteredForCurrentDate = filteredForCurrentDate[0]
+	filteredForCurrentDate = filteredForCurrentDate[filteredForCurrentDate.length-1] //Since we check only for the date and not month part in the filter, take the very last item in the array to avoid hitting up previous year tharppana sankalpam coinciding only with the day/date part. 
  }
 
 console.log(filteredForCurrentDate);
