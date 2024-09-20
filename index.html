@@ -433,7 +433,7 @@ var dataAll =
  //filter for the current date sankalpam
  var dtCurrent = new Date();
  var intCurrentDate = dtCurrent.getDate();
- var strCurrentDate = dtCurrent.getDate() + '-' + dtCurrent.getMonth()+1 + '-' + dtCurrent.getFullYear();
+ var strCurrentDate = dtCurrent.getDate() + '-' + parseInt(dtCurrent.getMonth()+1) + '-' + dtCurrent.getFullYear();
  var filteredForCurrentDate = dataAll.filter(thedata =>  (new Date(Date.parse(thedata.date))).getDate() === intCurrentDate);
 
  if(filteredForCurrentDate == undefined || filteredForCurrentDate.length ===0)
