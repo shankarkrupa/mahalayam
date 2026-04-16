@@ -46,6 +46,26 @@
     .pc-value { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
     .pc-sub   { font-size: .78rem; opacity: .8; margin-top: 2px; }
     .pc-extra { font-size: .72rem; opacity: .7; }
+    .pc-time-range {
+      font-size: .67rem; opacity: .82; margin-top: 5px; line-height: 1.4;
+      border-top: 1px solid rgba(255,255,255,.25); padding-top: 5px;
+    }
+    .pc-time-range .tr-label { opacity: .75; font-size: .63rem; text-transform: uppercase; letter-spacing: .04em; }
+    .sunrise-section {
+      background: linear-gradient(135deg,#fff3e0,#fff8e1);
+      border-left: 4px solid #fb8c00;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 0 24px 16px;
+      font-size: .85rem;
+    }
+    .sunrise-section .sr-title {
+      font-weight: 700; color: #e65100; margin-bottom: 10px; font-size: .9rem;
+    }
+    .sunrise-section .sr-item { margin-bottom: 4px; }
+    .sunrise-section .sr-lbl { color: #888; font-size: .72rem; }
+    .sunrise-section .sr-val { font-weight: 600; color: #333; }
+    .sunrise-section .sr-same { color: #2e7d32; font-size: .72rem; }
     .c-vara      { background: linear-gradient(135deg,#1565c0,#42a5f5); color:#fff; }
     .c-tithi     { background: linear-gradient(135deg,#2e7d32,#66bb6a); color:#fff; }
     .c-nakshatra { background: linear-gradient(135deg,#b71c1c,#ef9a9a); color:#fff; }
@@ -136,6 +156,10 @@
                   <div class="pc-value" id="tithi-ta">—</div>
                   <div class="pc-sub"   id="tithi-en">—</div>
                   <div class="pc-extra" id="paksha-ta">—</div>
+                  <div class="pc-time-range">
+                    <div class="tr-label">Active period</div>
+                    <span id="tithi-range-text">—</span>
+                  </div>
                 </div>
               </div>
               <!-- Nakshatra -->
@@ -145,6 +169,10 @@
                   <div class="pc-label">நட்சத்திரம் · Nakshatra</div>
                   <div class="pc-value" id="nakshatra-ta">—</div>
                   <div class="pc-sub"   id="nakshatra-en">—</div>
+                  <div class="pc-time-range">
+                    <div class="tr-label">Active period</div>
+                    <span id="nakshatra-range-text">—</span>
+                  </div>
                 </div>
               </div>
               <!-- Yoga -->
@@ -154,6 +182,10 @@
                   <div class="pc-label">யோகம் · Yoga</div>
                   <div class="pc-value" id="yoga-ta">—</div>
                   <div class="pc-sub"   id="yoga-en">—</div>
+                  <div class="pc-time-range">
+                    <div class="tr-label">Active period</div>
+                    <span id="yoga-range-text">—</span>
+                  </div>
                 </div>
               </div>
               <!-- Karana -->
@@ -163,7 +195,38 @@
                   <div class="pc-label">கரணம் · Karana</div>
                   <div class="pc-value" id="karana-ta">—</div>
                   <div class="pc-sub"   id="karana-en">—</div>
+                  <div class="pc-time-range">
+                    <div class="tr-label">Active period</div>
+                    <span id="karana-range-text">—</span>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Day's Panchangam at Sunrise -->
+          <div class="sunrise-section" id="sunriseSection">
+            <div class="sr-title">🌅 நாளின் பஞ்சாங்கம் · Day's Panchangam (at Sunrise ~6 AM IST)</div>
+            <div class="row g-2">
+              <div class="col-6 col-sm-3">
+                <div class="sr-lbl">திதி · Tithi</div>
+                <div class="sr-val" id="sr-tithi">—</div>
+                <div id="sr-tithi-same" class="sr-same"></div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="sr-lbl">நட்சத்திரம் · Nakshatra</div>
+                <div class="sr-val" id="sr-nakshatra">—</div>
+                <div id="sr-nakshatra-same" class="sr-same"></div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="sr-lbl">யோகம் · Yoga</div>
+                <div class="sr-val" id="sr-yoga">—</div>
+                <div id="sr-yoga-same" class="sr-same"></div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="sr-lbl">கரணம் · Karana</div>
+                <div class="sr-val" id="sr-karana">—</div>
+                <div id="sr-karana-same" class="sr-same"></div>
               </div>
             </div>
           </div>
@@ -435,6 +498,97 @@ function tithiEn(idx) {
   return TITHI_EN[idx < 15 ? idx : idx - 15];
 }
 
+// ── Per-JD index helpers (used for transition search) ───────────────
+function tithiIdxAt(jd) {
+  var ay = lahiriAyanamsha(jd);
+  var sunS  = norm(sunTropical(jd)  - ay);
+  var moonS = norm(moonTropical(jd) - ay);
+  return Math.floor(norm(moonS - sunS) / 12);
+}
+function nakshatraIdxAt(jd) {
+  var ay    = lahiriAyanamsha(jd);
+  var moonS = norm(moonTropical(jd) - ay);
+  return Math.floor(moonS / (360 / 27));
+}
+function yogaIdxAt(jd) {
+  var ay    = lahiriAyanamsha(jd);
+  var sunS  = norm(sunTropical(jd)  - ay);
+  var moonS = norm(moonTropical(jd) - ay);
+  return Math.floor(norm(sunS + moonS) / (360 / 27));
+}
+function karanaPosAt(jd) {
+  var ay    = lahiriAyanamsha(jd);
+  var sunS  = norm(sunTropical(jd)  - ay);
+  var moonS = norm(moonTropical(jd) - ay);
+  return Math.floor(norm(moonS - sunS) / 6);
+}
+
+// ── Transition-finding via step + bisection ──────────────────────────
+// Returns JD when the element last changed TO its current value.
+function findPrevTransition(jd, idxFn) {
+  var target = idxFn(jd);
+  var step   = 1 / 24; // 1 hour
+  var cur    = jd - step;
+  for (var i = 0; i < 48; i++) {
+    if (idxFn(cur) !== target) {
+      // Transition between cur and cur+step → bisect
+      var lo = cur, hi = cur + step;
+      for (var j = 0; j < 42; j++) {
+        var mid = (lo + hi) / 2;
+        if (idxFn(mid) === target) hi = mid; else lo = mid;
+      }
+      return hi;
+    }
+    cur -= step;
+  }
+  return null; // fallback: not found within 48 hours
+}
+
+// Returns JD when the element will next change away from its current value.
+function findNextTransition(jd, idxFn) {
+  var target = idxFn(jd);
+  var step   = 1 / 24;
+  var cur    = jd + step;
+  for (var i = 0; i < 48; i++) {
+    if (idxFn(cur) !== target) {
+      var lo = cur - step, hi = cur;
+      for (var j = 0; j < 42; j++) {
+        var mid = (lo + hi) / 2;
+        if (idxFn(mid) === target) lo = mid; else hi = mid;
+      }
+      return hi;
+    }
+    cur += step;
+  }
+  return null;
+}
+
+// ── JD → IST datetime object ─────────────────────────────────────────
+// JD 2440587.5 = 1970-01-01 00:00:00 UTC
+var _IST_OFFSET_MS = 330 * 60000; // 5h30m in ms
+var _UNIX_EPOCH_JD = 2440587.5;
+var _MON3 = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function jdToIST(jd) {
+  var ms = (jd - _UNIX_EPOCH_JD) * 86400000 + _IST_OFFSET_MS;
+  var d  = new Date(ms);
+  return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1,
+           day: d.getUTCDate(), hour: d.getUTCHours(), min: d.getUTCMinutes() };
+}
+
+function fmtISTdt(t) {
+  var h = t.hour, ap = h < 12 ? 'AM' : 'PM';
+  h = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return _MON3[t.month - 1] + ' ' + t.day + ', ' + h + ':' + String(t.min).padStart(2,'0') + ' ' + ap;
+}
+
+// Format an active-period range string; null JDs show as "—"
+function fmtRange(jdStart, jdEnd) {
+  var s = jdStart ? fmtISTdt(jdToIST(jdStart)) : '—';
+  var e = jdEnd   ? fmtISTdt(jdToIST(jdEnd))   : '—';
+  return s + ' → ' + e + ' IST';
+}
+
 // ── Core computation ─────────────────────────────────────────────────
 function computePanchangam(dateStr, timeStr) {
   var dp = dateStr.split('-');
@@ -545,6 +699,45 @@ function calculate() {
     '<span class="badge bg-success  info-badge">' + MASA_TA[r.masaIdx] + ' மாதம் · ' + MASA_EN[r.masaIdx] + '</span>' +
     '<span class="badge bg-secondary info-badge">Lahiri Ayanamsha · Nirayana</span>';
   document.getElementById('yearMonthRow').innerHTML = badges;
+
+  // ── Active-period ranges for each element ─────────────────────────
+  var jd = r.jd;
+
+  var tithiStart     = findPrevTransition(jd, tithiIdxAt);
+  var tithiEnd       = findNextTransition(jd, tithiIdxAt);
+  set('tithi-range-text', fmtRange(tithiStart, tithiEnd));
+
+  var nakshatraStart = findPrevTransition(jd, nakshatraIdxAt);
+  var nakshatraEnd   = findNextTransition(jd, nakshatraIdxAt);
+  set('nakshatra-range-text', fmtRange(nakshatraStart, nakshatraEnd));
+
+  var yogaStart      = findPrevTransition(jd, yogaIdxAt);
+  var yogaEnd        = findNextTransition(jd, yogaIdxAt);
+  set('yoga-range-text', fmtRange(yogaStart, yogaEnd));
+
+  var karanaStart    = findPrevTransition(jd, karanaPosAt);
+  var karanaEnd      = findNextTransition(jd, karanaPosAt);
+  set('karana-range-text', fmtRange(karanaStart, karanaEnd));
+
+  // ── Day's panchangam at sunrise (≈ 6:00 AM IST on selected date) ──
+  var rs = computePanchangam(dateStr, '06:00');
+
+  set('sr-tithi', tithiTa(rs.tithiIdx) + ' · ' + tithiEn(rs.tithiIdx));
+  set('sr-tithi-same',
+      rs.tithiIdx === r.tithiIdx ? '✓ same as selected time' : '');
+
+  set('sr-nakshatra', NAKSHATRA_TA[rs.nakshatraIdx] + ' · ' + NAKSHATRA_EN[rs.nakshatraIdx]);
+  set('sr-nakshatra-same',
+      rs.nakshatraIdx === r.nakshatraIdx ? '✓ same as selected time' : '');
+
+  set('sr-yoga', YOGA_TA[rs.yogaIdx] + ' · ' + YOGA_EN[rs.yogaIdx]);
+  set('sr-yoga-same',
+      rs.yogaIdx === r.yogaIdx ? '✓ same as selected time' : '');
+
+  var sk = karanaName(rs.karanaPos);
+  set('sr-karana', sk.ta + ' · ' + sk.en);
+  set('sr-karana-same',
+      rs.karanaPos === r.karanaPos ? '✓ same as selected time' : '');
 
   document.getElementById('results').style.display = 'block';
 }
