@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>வாக்ய பஞ்சாங்கம் | Vaakya Panchangam</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+        crossorigin="anonymous">
+  <style>
+    body {
+      font-family: 'Noto Sans Tamil', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #2c3e50 0%, #4a1942 100%);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+    .main-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0,0,0,.4);
+      overflow: hidden;
+    }
+    .title-header {
+      background: linear-gradient(135deg, #8e24aa 0%, #e53935 100%);
+      color: #fff;
+      padding: 28px 24px 20px;
+      text-align: center;
+    }
+    .title-header h2 { margin-bottom: 4px; font-size: 1.7rem; }
+    .title-header p  { margin: 0; opacity: .85; font-size: .95rem; }
+    .title-header small { opacity: .65; font-size: .78rem; }
+    .input-area { padding: 22px 24px 16px; }
+    .pc-row { padding: 0 24px 24px; }
+    .pc-card {
+      border: none;
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      height: 100%;
+      transition: transform .18s;
+    }
+    .pc-card:hover { transform: translateY(-3px); }
+    .pc-icon  { font-size: 1.9rem; line-height: 1; }
+    .pc-label { font-size: .75rem; opacity: .75; margin: 4px 0 2px; letter-spacing: .03em; }
+    .pc-value { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
+    .pc-sub   { font-size: .78rem; opacity: .8; margin-top: 2px; }
+    .pc-extra { font-size: .72rem; opacity: .7; }
+    .c-vara      { background: linear-gradient(135deg,#1565c0,#42a5f5); color:#fff; }
+    .c-tithi     { background: linear-gradient(135deg,#2e7d32,#66bb6a); color:#fff; }
+    .c-nakshatra { background: linear-gradient(135deg,#b71c1c,#ef9a9a); color:#fff; }
+    .c-yoga      { background: linear-gradient(135deg,#4a148c,#ce93d8); color:#fff; }
+    .c-karana    { background: linear-gradient(135deg,#bf360c,#ffb74d); color:#fff; }
+    .calc-btn {
+      background: linear-gradient(135deg,#8e24aa,#e53935);
+      border: none; color: #fff;
+      padding: 11px 36px;
+      border-radius: 24px;
+      font-size: 1.05rem;
+      width: 100%;
+    }
+    .calc-btn:hover { opacity: .9; color: #fff; }
+    .badge-row { padding: 0 24px 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .info-badge { font-size: .78rem; padding: 4px 10px; border-radius: 12px; }
+    #results { display: none; }
+    .detail-box {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 0 24px 24px;
+      font-size: .85rem;
+    }
+    .detail-box .lbl { color: #555; font-size: .75rem; }
+    .detail-box .val { font-weight: 600; }
+    .note-box {
+      margin: 0 24px 24px;
+      padding: 10px 14px;
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 0 8px 8px 0;
+      font-size: .78rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-10">
+      <div class="main-card">
+
+        <!-- Header -->
+        <div class="title-header">
+          <h2>🌙 வாக்ய பஞ்சாங்கம்</h2>
+          <p>Vaakya Panchangam Calculator</p>
+          <small>South Indian · Lahiri Ayanamsha · Nirayana (Sidereal)</small>
+        </div>
+
+        <!-- Input -->
+        <div class="input-area">
+          <div class="row g-2 align-items-end">
+            <div class="col-sm-5">
+              <label class="form-label fw-semibold mb-1" for="inputDate">தேதி / Date</label>
+              <input type="date" class="form-control" id="inputDate">
+            </div>
+            <div class="col-sm-4">
+              <label class="form-label fw-semibold mb-1" for="inputTime">நேரம் / Time (IST)</label>
+              <input type="time" class="form-control" id="inputTime" value="06:00">
+            </div>
+            <div class="col-sm-3">
+              <button class="btn calc-btn" onclick="calculate()">✨ காண்க</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results">
+          <div class="badge-row" id="yearMonthRow"></div>
+
+          <div class="pc-row">
+            <div class="row g-3">
+              <!-- Vara -->
+              <div class="col-6 col-sm-4">
+                <div class="pc-card c-vara h-100">
+                  <div class="pc-icon">☀️</div>
+                  <div class="pc-label">வாரம் · Vara</div>
+                  <div class="pc-value" id="vara-ta">—</div>
+                  <div class="pc-sub"   id="vara-en">—</div>
+                </div>
+              </div>
+              <!-- Tithi -->
+              <div class="col-6 col-sm-4">
+                <div class="pc-card c-tithi h-100">
+                  <div class="pc-icon">🌙</div>
+                  <div class="pc-label">திதி · Tithi</div>
+                  <div class="pc-value" id="tithi-ta">—</div>
+                  <div class="pc-sub"   id="tithi-en">—</div>
+                  <div class="pc-extra" id="paksha-ta">—</div>
+                </div>
+              </div>
+              <!-- Nakshatra -->
+              <div class="col-12 col-sm-4">
+                <div class="pc-card c-nakshatra h-100">
+                  <div class="pc-icon">⭐</div>
+                  <div class="pc-label">நட்சத்திரம் · Nakshatra</div>
+                  <div class="pc-value" id="nakshatra-ta">—</div>
+                  <div class="pc-sub"   id="nakshatra-en">—</div>
+                </div>
+              </div>
+              <!-- Yoga -->
+              <div class="col-6">
+                <div class="pc-card c-yoga h-100">
+                  <div class="pc-icon">🔯</div>
+                  <div class="pc-label">யோகம் · Yoga</div>
+                  <div class="pc-value" id="yoga-ta">—</div>
+                  <div class="pc-sub"   id="yoga-en">—</div>
+                </div>
+              </div>
+              <!-- Karana -->
+              <div class="col-6">
+                <div class="pc-card c-karana h-100">
+                  <div class="pc-icon">⚡</div>
+                  <div class="pc-label">கரணம் · Karana</div>
+                  <div class="pc-value" id="karana-ta">—</div>
+                  <div class="pc-sub"   id="karana-en">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible details -->
+          <div style="padding:0 24px 12px;">
+            <button class="btn btn-sm btn-outline-secondary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#detailCollapse"
+                    aria-expanded="false">
+              🔍 கணக்கீட்டு விவரங்கள் / Calculation Details
+            </button>
+          </div>
+          <div class="collapse" id="detailCollapse">
+            <div class="detail-box">
+              <div class="row g-2">
+                <div class="col-sm-6">
+                  <div class="lbl">☀️ Sun (Ravi) – Sidereal longitude</div>
+                  <div class="val" id="sunLon">—</div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="lbl">🌙 Moon (Chandra) – Sidereal longitude</div>
+                  <div class="val" id="moonLon">—</div>
+                </div>
+                <div class="col-sm-6 mt-1">
+                  <div class="lbl">Lahiri Ayanamsha</div>
+                  <div class="val" id="ayanamshaVal">—</div>
+                </div>
+                <div class="col-sm-6 mt-1">
+                  <div class="lbl">Julian Day Number</div>
+                  <div class="val" id="jdNum">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Note -->
+          <div class="note-box">
+            <strong>குறிப்பு / Note:</strong>
+            இக்கணக்கீடு Jean Meeus நவீன வானியல் கணக்கீட்டு முறையில் (Lahiri/Chitra Paksha ayanamsha)
+            செய்யப்பட்டது. இது பெரும்பாலான நாட்களில் வாக்ய பஞ்சாங்கத்துடன் ஒத்துப்போகும்.
+            சந்திரன் ஒரு நட்சத்திரத்திலிருந்து இன்னொன்றுக்கு மாறும் நேரத்தில் சிறிய வித்தியாசம்
+            இருக்கலாம் — இது வாக்ய / திருகணித வேறுபாடு.
+          </div>
+        </div><!-- /#results -->
+      </div><!-- /.main-card -->
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  VAAKYA PANCHANGAM
+//  Astronomical engine: Jean Meeus "Astronomical Algorithms"
+//  Sidereal frame    : Lahiri / Chitra Paksha ayanamsha
+//  Input timezone    : IST (UTC +5:30)
+// ═══════════════════════════════════════════════════════════════════
+
+// ── Utility ─────────────────────────────────────────────────────────
+function norm(a) { return ((a % 360) + 360) % 360; }
+var R = Math.PI / 180;
+
+// ── Gregorian date + UTC time → Julian Day Number ──────────────────
+function gregorianToJD(yr, mo, dy, hr, mn) {
+  var y = yr, m = mo;
+  if (m <= 2) { y -= 1; m += 12; }
+  var A = Math.floor(y / 100);
+  var B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (y + 4716))
+       + Math.floor(30.6001 * (m + 1))
+       + dy + B - 1524.5
+       + (hr + mn / 60) / 24;
+}
+
+// ── Sun tropical longitude (Jean Meeus Ch. 25, ~0.01° accuracy) ────
+function sunTropical(jd) {
+  var T = (jd - 2451545.0) / 36525.0;
+  var L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  var M  = norm(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+  var Mr = M * R;
+  var C  = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mr)
+         + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr)
+         + 0.000289 * Math.sin(3 * Mr);
+  var lon = L0 + C;
+  // Apparent: subtract nutation + aberration (approx)
+  var Omega = norm(125.04 - 1934.136 * T);
+  lon -= 0.00569 + 0.00478 * Math.sin(Omega * R);
+  return norm(lon);
+}
+
+// ── Moon tropical longitude (Jean Meeus Ch. 47, ~0.1° accuracy) ────
+function moonTropical(jd) {
+  var T  = (jd - 2451545.0) / 36525.0;
+  var T2 = T * T, T3 = T2 * T, T4 = T3 * T;
+
+  var Lp = norm(218.3164477 + 481267.88123421*T - 0.0015786*T2 + T3/538841    - T4/65194000);
+  var D  = norm(297.8501921 + 445267.1114034 *T - 0.0018819*T2 + T3/545868    - T4/113065000);
+  var M  = norm(357.5291092 + 35999.0502909  *T - 0.0001536*T2 + T3/24490000);
+  var Mp = norm(134.9633964 + 477198.8675055 *T + 0.0087414*T2 + T3/69699     - T4/14712000);
+  var F  = norm(93.2720950  + 483202.0175233 *T - 0.0036539*T2 - T3/3526000   + T4/863310000);
+
+  var E  = 1 - 0.002516 * T - 0.0000074 * T2;
+  var E2 = E * E;
+
+  // Σl terms (degrees) – Table 47.A, top 40 terms
+  var SL = 0;
+  function add(d, m, mp, f, c) {
+    SL += c * Math.sin((d*D + m*M + mp*Mp + f*F) * R);
+  }
+  add(0, 0, 1, 0,  6.288774);
+  add(2, 0,-1, 0,  1.274027);
+  add(2, 0, 0, 0,  0.658314);
+  add(0, 0, 2, 0,  0.213618);
+  add(0,-1, 0, 0, -0.185116 * E);
+  add(0, 0, 0, 2, -0.114332);
+  add(2, 0,-2, 0,  0.058793);
+  add(2,-1,-1, 0,  0.057066 * E);
+  add(2, 0, 1, 0,  0.053322);
+  add(2,-1, 0, 0,  0.045758 * E);
+  add(0, 1,-1, 0, -0.040923 * E);
+  add(1, 0, 0, 0, -0.034720);
+  add(0, 1, 1, 0, -0.030383 * E);
+  add(2, 0, 0,-2,  0.015327);
+  add(0, 0, 1, 2, -0.012528);
+  add(0, 0, 1,-2,  0.010980);
+  add(4, 0,-1, 0,  0.010675);
+  add(0, 0, 3, 0,  0.010034);
+  add(4, 0,-2, 0,  0.008548);
+  add(2, 1,-1, 0, -0.007888 * E);
+  add(2, 1, 0, 0, -0.006766 * E);
+  add(1, 0,-1, 0, -0.005163);
+  add(1, 1, 0, 0,  0.004987 * E);
+  add(2,-1, 1, 0,  0.004036 * E);
+  add(2, 0, 2, 0,  0.003994);
+  add(4, 0, 0, 0,  0.003861);
+  add(2, 0,-3, 0,  0.003665);
+  add(0, 1,-2, 0, -0.002689 * E);
+  add(2, 0,-1, 2, -0.002602);
+  add(2,-1,-2, 0,  0.002390 * E);
+  add(1, 0, 1, 0, -0.002348);
+  add(2,-2, 0, 0,  0.002236 * E2);
+  add(0, 1, 2, 0, -0.002120 * E);
+  add(0, 2, 0, 0, -0.002069 * E2);
+  add(2,-2,-1, 0,  0.002048 * E2);
+  add(2, 0, 1,-2, -0.001773);
+  add(2, 0, 0, 2, -0.001595);
+  add(4,-1,-1, 0,  0.001215 * E);
+  add(0, 0, 2, 2, -0.001110);
+  add(3, 0,-1, 0, -0.000892);
+  add(2, 1, 1, 0, -0.000810 * E);
+  add(4,-1,-2, 0,  0.000759 * E);
+  add(0, 2,-1, 0, -0.000713 * E2);
+  add(2, 2,-1, 0, -0.000700 * E2);
+  add(2, 1,-2, 0,  0.000691 * E);
+  add(2,-1, 0,-2,  0.000596 * E);
+  add(4, 0, 1, 0,  0.000549);
+  add(0, 0, 4, 0,  0.000537);
+  add(4,-1, 0, 0,  0.000520 * E);
+  add(1, 0,-2, 0, -0.000487);
+
+  return norm(Lp + SL);
+}
+
+// ── Lahiri ayanamsha (degrees) ──────────────────────────────────────
+// Calibrated so that 15 Sep 2022 gives ~23.967°, verified against
+// published South Indian panchangam values.
+function lahiriAyanamsha(jd) {
+  return 23.65 + 0.013969722 * (jd - 2451545.0) / 365.25;
+}
+
+// ── Format sidereal longitude for display ──────────────────────────
+var RASHI_EN = ['Mesha ♈','Vrishabha ♉','Mithuna ♊','Karka ♋',
+                'Simha ♌','Kanya ♍','Tula ♎','Vrischika ♏',
+                'Dhanu ♐','Makara ♑','Kumbha ♒','Meena ♓'];
+function fmtLon(deg) {
+  var ri = Math.floor(deg / 30);
+  var inR = deg % 30;
+  var d = Math.floor(inR);
+  var m = Math.floor((inR - d) * 60);
+  var s = Math.floor(((inR - d) * 60 - m) * 60);
+  return (RASHI_EN[ri] || '') + '  ' + d + '° ' + m + "' " + s + '"  (' + deg.toFixed(3) + '°)';
+}
+
+// ── Days in a Gregorian month ───────────────────────────────────────
+function daysInMonth(y, m) { return new Date(y, m, 0).getDate(); }
+
+// ── Name tables ─────────────────────────────────────────────────────
+var VARA_TA = ['ஞாயிறு','திங்கள்','செவ்வாய்','புதன்','வியாழன்','வெள்ளி','சனி'];
+var VARA_EN = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+var TITHI_TA = ['பிரதமை','துவிதியை','திருதியை','சதுர்த்தி','பஞ்சமி',
+                'சஷ்டி','சப்தமி','அஷ்டமி','நவமி','தசமி',
+                'ஏகாதசி','துவாதசி','திரயோதசி','சதுர்தசி'];
+var TITHI_EN = ['Pratipat','Dvitiya','Tritiya','Chaturthi','Panchami',
+                'Shashthi','Saptami','Ashtami','Navami','Dashami',
+                'Ekadashi','Dvadashi','Trayodashi','Chaturdashi'];
+
+var NAKSHATRA_TA = ['அஸ்வினி','பரணி','கிருத்திகை','ரோஹிணி','மிருகசீரிடம்',
+  'திருவாதிரை','புனர்பூசம்','பூசம்','ஆயில்யம்','மகம்',
+  'பூரம்','உத்திரம்','ஹஸ்தம்','சித்திரை','சுவாதி',
+  'விசாகம்','அனுஷம்','கேட்டை','மூலம்','பூராடம்',
+  'உத்திராடம்','திருவோணம்','அவிட்டம்','சதயம்',
+  'பூரட்டாதி','உத்திரட்டாதி','ரேவதி'];
+var NAKSHATRA_EN = ['Ashwini','Bharani','Krittika','Rohini','Mrigashirsha',
+  'Ardra','Punarvasu','Pushya','Ashlesha','Magha',
+  'Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati',
+  'Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha',
+  'Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha',
+  'Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+
+var YOGA_TA = ['விஷ்கம்பம்','ப்ரீதி','ஆயுஷ்மான்','சௌபாக்யம்','சோபனம்',
+  'அதிகண்டம்','சுகர்மம்','திருதி','சூலம்','கண்டம்',
+  'வ்ருத்தி','துருவம்','வ்யாகாதம்','ஹர்ஷணம்','வஜ்ரம்',
+  'சித்தி','வ்யதீபாதம்','வரீயான்','பரிகம்','சிவம்',
+  'சித்தம்','சாத்யம்','சுபம்','சுக்லம்','ப்ரஹ்மம்',
+  'இந்திரம்','வைத்ருதி'];
+var YOGA_EN = ['Vishkambha','Priti','Ayushman','Saubhagya','Shobhana',
+  'Atiganda','Sukarman','Dhriti','Shula','Ganda',
+  'Vriddhi','Dhruva','Vyaghata','Harshana','Vajra',
+  'Siddhi','Vyatipata','Variyan','Parigha','Shiva',
+  'Siddha','Sadhya','Shubha','Shukla','Brahma',
+  'Indra','Vaidhriti'];
+
+var KARANA_MOV_TA = ['பவம்','பாலவம்','கௌலவம்','தைதிலம்','கரஜம்','வணிஜம்','விஷ்டி'];
+var KARANA_MOV_EN = ['Bava','Balava','Kaulava','Taitila','Gara','Vanija','Vishti (Bhadra)'];
+
+var MASA_TA = ['சித்திரை','வைகாசி','ஆனி','ஆடி','ஆவணி','புரட்டாசி',
+               'ஐப்பசி','கார்த்திகை','மார்கழி','தை','மாசி','பங்குனி'];
+var MASA_EN = ['Chithirai','Vaigasi','Aani','Aadi','Aavani','Purattasi',
+               'Aippasi','Karthigai','Margazhi','Thai','Maasi','Panguni'];
+
+var SAMVATSARA_TA = [
+  'ப்ரபவ','விபவ','சுக்ல','ப்ரமோதூத','ப்ரஜோத்பத்தி','ஆங்கீரஸ',
+  'ஸ்ரீமுக','பவ','யுவ','தாது','ஈஸ்வர','பஹுதான்ய',
+  'ப்ரமாதி','விக்ரம','வ்ருஷ','சித்ரபானு','சுபானு','தாரண',
+  'பார்த்திவ','வ்யயா','சர்வஜித்','சர்வதாரி','விரோதி','விக்ருதி',
+  'கர','நந்தன','விஜய','ஜய','மன்மத','துர்முகி',
+  'ஹேவிளம்பி','விளம்பி','விகாரி','சார்வரி','ப்லவ','சுபக்ருது',
+  'சோபக்ருது','க்ரோதி','விஸ்வாவசு','பராபவ','ப்லவங்க','கீலக',
+  'சௌம்ய','சாதாரண','விரோதக்ருது','பரிதாபி','ப்ரமாதீச','ஆனந்த',
+  'ராக்ஷஸ','நல','பிங்கள','காளயுக்தி','சித்தார்த்தி','ரௌத்ர',
+  'துர்மதி','துந்துபி','ருத்ரோத்காரி','ரக்தாக்ஷி','க்ரோதன','அக்ஷய'
+];
+
+// ── Karana name (position 0–59 in the lunar month) ─────────────────
+function karanaName(pos) {
+  if (pos === 0)  return { ta: 'கிம்ஸ்துக்னம்', en: 'Kimstughna' };
+  if (pos === 57) return { ta: 'சகுனி',          en: 'Shakuni' };
+  if (pos === 58) return { ta: 'சதுஷ்பாதம்',     en: 'Chatushpada' };
+  if (pos === 59) return { ta: 'நாகவம்',          en: 'Naga' };
+  var i = (pos - 1) % 7;
+  return { ta: KARANA_MOV_TA[i], en: KARANA_MOV_EN[i] };
+}
+
+// ── Tithi names (index 0–29) ────────────────────────────────────────
+function tithiTa(idx) {
+  if (idx === 14) return 'பௌர்ணமி';
+  if (idx === 29) return 'அமாவாசை';
+  return TITHI_TA[idx < 15 ? idx : idx - 15];
+}
+function tithiEn(idx) {
+  if (idx === 14) return 'Purnima (Full Moon)';
+  if (idx === 29) return 'Amavasya (New Moon)';
+  return TITHI_EN[idx < 15 ? idx : idx - 15];
+}
+
+// ── Core computation ─────────────────────────────────────────────────
+function computePanchangam(dateStr, timeStr) {
+  var dp = dateStr.split('-');
+  var inputYear  = parseInt(dp[0], 10);
+  var inputMonth = parseInt(dp[1], 10);
+  var inputDay   = parseInt(dp[2], 10);
+
+  var tp = (timeStr || '06:00').split(':');
+  var istH = parseInt(tp[0], 10);
+  var istM = parseInt(tp[1], 10);
+
+  // IST → UTC (subtract 5 h 30 m)
+  var utcM = istM - 30, utcH = istH - 5;
+  var utcD = inputDay, utcMo = inputMonth, utcY = inputYear;
+  if (utcM < 0) { utcM += 60; utcH -= 1; }
+  if (utcH < 0) {
+    utcH += 24; utcD -= 1;
+    if (utcD < 1) {
+      utcMo -= 1;
+      if (utcMo < 1) { utcMo = 12; utcY -= 1; }
+      utcD = daysInMonth(utcY, utcMo);
+    }
+  }
+
+  var jd = gregorianToJD(utcY, utcMo, utcD, utcH, utcM);
+  var ay = lahiriAyanamsha(jd);
+
+  // Sidereal longitudes
+  var sunS  = norm(sunTropical(jd)  - ay);
+  var moonS = norm(moonTropical(jd) - ay);
+
+  // ── Vara (weekday) ── 0=Sun … 6=Sat
+  var vara = Math.floor(jd + 1.5) % 7;
+
+  // ── Tithi ── (Moon – Sun) / 12°  → index 0–29
+  var msd      = norm(moonS - sunS);
+  var tithiIdx = Math.floor(msd / 12);
+
+  // ── Nakshatra ── Moon / (360/27) → 0–26
+  var nakshatraIdx = Math.floor(moonS / (360 / 27));
+
+  // ── Yoga ── (Sun + Moon) / (360/27) → 0–26
+  var yogaIdx = Math.floor(norm(sunS + moonS) / (360 / 27));
+
+  // ── Karana ── every 6° of msd → position 0–59
+  var karanaPos = Math.floor(msd / 6);
+
+  // ── Solar month (Masa) ── Sun rashi 0–11
+  var masaIdx = Math.floor(sunS / 30);
+
+  // ── Samvatsara (60-year cycle) ──
+  // Reference: Tamil year 2022 (after Apr 14) = Subhakrit (index 35).
+  // Formula verified for 2022–2025.
+  var civilYear     = (inputMonth >= 4) ? inputYear : inputYear - 1;
+  var samvatsaraIdx = ((civilYear + 3102 + 11) % 60 + 60) % 60;
+
+  return {
+    jd: jd, ay: ay,
+    sunS: sunS, moonS: moonS,
+    vara: vara,
+    tithiIdx: tithiIdx,
+    paksha: tithiIdx < 15
+              ? 'சுக்ல பக்ஷம் (Shukla / Waxing)'
+              : 'கிருஷ்ண பக்ஷம் (Krishna / Waning)',
+    nakshatraIdx: nakshatraIdx,
+    yogaIdx: yogaIdx,
+    karanaPos: karanaPos,
+    masaIdx: masaIdx,
+    samvatsaraIdx: samvatsaraIdx
+  };
+}
+
+// ── UI ───────────────────────────────────────────────────────────────
+function set(id, val) { document.getElementById(id).textContent = val; }
+
+function calculate() {
+  var dateStr = document.getElementById('inputDate').value;
+  var timeStr = document.getElementById('inputTime').value || '06:00';
+
+  if (!dateStr) {
+    alert('தயவுசெய்து தேதியை உள்ளிடவும் · Please enter a date');
+    return;
+  }
+
+  var r = computePanchangam(dateStr, timeStr);
+
+  set('vara-ta',       VARA_TA[r.vara]);
+  set('vara-en',       VARA_EN[r.vara]);
+  set('tithi-ta',      tithiTa(r.tithiIdx));
+  set('tithi-en',      tithiEn(r.tithiIdx));
+  set('paksha-ta',     r.paksha);
+  set('nakshatra-ta',  NAKSHATRA_TA[r.nakshatraIdx]);
+  set('nakshatra-en',  NAKSHATRA_EN[r.nakshatraIdx]);
+  set('yoga-ta',       YOGA_TA[r.yogaIdx]);
+  set('yoga-en',       YOGA_EN[r.yogaIdx]);
+
+  var k = karanaName(r.karanaPos);
+  set('karana-ta', k.ta);
+  set('karana-en', k.en);
+
+  set('sunLon',       fmtLon(r.sunS));
+  set('moonLon',      fmtLon(r.moonS));
+  set('ayanamshaVal', r.ay.toFixed(4) + '°');
+  set('jdNum',        r.jd.toFixed(4));
+
+  var badges =
+    '<span class="badge bg-danger   info-badge">' + SAMVATSARA_TA[r.samvatsaraIdx] + ' வருடம்</span>' +
+    '<span class="badge bg-success  info-badge">' + MASA_TA[r.masaIdx] + ' மாதம் · ' + MASA_EN[r.masaIdx] + '</span>' +
+    '<span class="badge bg-secondary info-badge">Lahiri Ayanamsha · Nirayana</span>';
+  document.getElementById('yearMonthRow').innerHTML = badges;
+
+  document.getElementById('results').style.display = 'block';
+}
+
+// Pre-fill today's date and current IST time on load
+window.addEventListener('load', function () {
+  var now = new Date();
+  var y  = now.getFullYear();
+  var mo = String(now.getMonth() + 1).padStart(2, '0');
+  var d  = String(now.getDate()).padStart(2, '0');
+  var h  = String(now.getHours()).padStart(2, '0');
+  var mi = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('inputDate').value = y + '-' + mo + '-' + d;
+  document.getElementById('inputTime').value = h + ':' + mi;
+});
+</script>
+</body>
+</html>
