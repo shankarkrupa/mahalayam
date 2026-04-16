@@ -549,14 +549,15 @@ function calculate() {
   document.getElementById('results').style.display = 'block';
 }
 
-// Pre-fill today's date and current IST time on load
+// Pre-fill today's date and current IST time on load.
+// IST = UTC + 5:30, so we convert regardless of the user's local timezone.
 window.addEventListener('load', function () {
-  var now = new Date();
-  var y  = now.getFullYear();
-  var mo = String(now.getMonth() + 1).padStart(2, '0');
-  var d  = String(now.getDate()).padStart(2, '0');
-  var h  = String(now.getHours()).padStart(2, '0');
-  var mi = String(now.getMinutes()).padStart(2, '0');
+  var ist = new Date(Date.now() + (5 * 60 + 30) * 60 * 1000);
+  var y  = ist.getUTCFullYear();
+  var mo = String(ist.getUTCMonth() + 1).padStart(2, '0');
+  var d  = String(ist.getUTCDate()).padStart(2, '0');
+  var h  = String(ist.getUTCHours()).padStart(2, '0');
+  var mi = String(ist.getUTCMinutes()).padStart(2, '0');
   document.getElementById('inputDate').value = y + '-' + mo + '-' + d;
   document.getElementById('inputTime').value = h + ':' + mi;
 });
